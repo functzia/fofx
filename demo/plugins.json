@@ -1,1 +1,8 @@
-["./plugins/fofx-web"]
+[
+  {
+    "name": "https://github.com/functzia/fofx-web/tarball/master",
+    "params": {
+      "port": 5000
+    }
+  }
+]
