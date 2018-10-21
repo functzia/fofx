@@ -22,5 +22,10 @@
   },
   "bin": {
     "fofx": "bin/cli.js"
-  }
+  },
+  "keywords": [
+    "serverless",
+    "platform",
+    "services"
+  ]
 }
