@@ -11,7 +11,7 @@ async function setupFofx(logLevel, pluginsFile, nanosFile) {
   try {
     const nq = getNanosQueue(log);
     const pluginsByType = await getPluginsByType(pluginsFile, log);
-    await loadNanos(nanosFile, pluginsByType, nq);
+    await loadNanos(nanosFile, pluginsByType, nq, fofxLog);
     fofxLog.info('Ready to go!');
   } catch (error) {
     fofxLog.fatal('Fatal platform error');
@@ -19,4 +19,4 @@ async function setupFofx(logLevel, pluginsFile, nanosFile) {
   }
 }
 
-setupFofx(...process.argv.slice(2)).catch(console.error);
+module.exports = setupFofx;
