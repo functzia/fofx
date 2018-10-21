@@ -1,1 +1,4 @@
-["../demo/nano", "../demo/nano1"]
+[
+  "https://github.com/functzia/nano-test/tarball/master",
+  "https://github.com/functzia/nano-test/tarball/mirror"
+]

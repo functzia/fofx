@@ -62,4 +62,6 @@ typings/
 
 cache
 plugins/node_modules
+nanos/node_modules
 plugins/package-lock.json
+nanos/package-lock.json
