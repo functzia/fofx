@@ -1,0 +1,7 @@
+{
+  "input": {
+    "type": "web",
+    "endpoint": "bar",
+    "response": true
+  }
+}

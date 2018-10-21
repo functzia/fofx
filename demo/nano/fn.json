@@ -3,5 +3,10 @@
     "type": "web",
     "endpoint": "foo",
     "response": true
+  },
+  "output": {
+    "type": "web",
+    "method": "POST",
+    "url": "http://localhost:5000/api/bar"
   }
 }
