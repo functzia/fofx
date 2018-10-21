@@ -6,10 +6,15 @@
   "author": "Alon Niv <oakfang@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.4.1",
     "lodash": "^4.17.11",
     "npm": "^6.4.1",
     "pacote": "^9.1.0",
     "rimraf": "^2.6.2",
+    "time-stamp": "^2.1.0",
     "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "start": "node ."
   }
 }
