@@ -1,21 +1,28 @@
+const path = require('path');
+const mkdirp = require('mkdirp');
+const { promisify } = require('./lib/utils');
 const getNanosQueue = require('./lib/queue');
 const { getPluginsByType } = require('./lib/plugins');
 const { loadNanos } = require('./lib/nanos');
 const Logger = require('./lib/logger');
 const logText = require('./lib/logger/text');
 
-async function setupFofx(logLevel, pluginsFile, nanosFile) {
-  const log = new Logger(Logger.levels[logLevel.toUpperCase()]);
+async function setupFofx({ level, plugins, nanos, modules }) {
+  const log = new Logger(Logger.levels[level.toUpperCase()]);
   logText(log);
   const fofxLog = log.scoped('fofx');
   try {
+    await promisify(mkdirp)(path.join(modules, 'plugins'));
+    await promisify(mkdirp)(path.join(modules, 'nanos'));
+    await promisify(mkdirp)(path.join(modules, 'cache'));
     const nq = getNanosQueue(log);
-    const pluginsByType = await getPluginsByType(pluginsFile, log);
-    await loadNanos(nanosFile, pluginsByType, nq, fofxLog);
+    const pluginsByType = await getPluginsByType(modules, plugins, log);
+    await loadNanos(modules, nanos, pluginsByType, nq, fofxLog);
     fofxLog.info('Ready to go!');
   } catch (error) {
     fofxLog.fatal('Fatal platform error');
     fofxLog.fatal(error);
+    process.exit(1);
   }
 }
 
