@@ -4,9 +4,10 @@ const { argv } = require('yargs')
   .usage(
     'Usage: $0 --plugins <plugins file> --nanos <nanos file> [--level=INFO]'
   )
-  .demandOption(['plugins', 'nanos'])
   .default('level', 'INFO')
   .default('modules', path.join(process.cwd(), 'modules'))
+  .default('plugins', path.join(process.cwd(), 'plugins.json'))
+  .default('nanos', path.join(process.cwd(), 'nanos.json'))
   .describe('plugins', 'Path to plugins JSON file')
   .describe('nanos', 'Path to nanos JSON file')
   .describe('modules', 'Directory in which to save dependencies for runtime')

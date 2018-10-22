@@ -111,7 +111,7 @@ Setup is done!
 ## Run
 
 Assuming your CWD is our demo directory, run:
-`fofx --plugins plugins.json --nanos nanos.json`
+`fofx`
 
 This should install your plugins and nanos in a directory named _modules_ under _demo_:
 
@@ -132,6 +132,8 @@ demo/
 If and when you use git to manage your `fofx` setup, you should set the _.gitignore_ to ignore the _modules_ directory.
 
 And there you have it - a running platform for your nanoservices.
+
+You can view a demo setup [here](https://github.com/functzia/demo).
 
 ## Official Plugins
 
