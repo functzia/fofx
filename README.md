@@ -86,6 +86,10 @@ Other plugins, such as web input, might pass one argument (e.g. a web request ob
 */
 module.exports = function() {
   // We were called!
+
+  // every nano can hook into fofx log :)
+  // available methods are: doc, debug, info, warn, error and fatal
+  this.log.info('I have a dedicated log! Yay!');
   return {
     timestamp: Date.now(),
   };
