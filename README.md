@@ -143,4 +143,4 @@ You can view a demo setup [here](https://github.com/functzia/demo).
 ## Roadmap
 
 - [ ] Scalable/distributed
-- [ ] Watch changes to plugins/nanos and reload
+- [x] Watch changes to plugins/nanos and reload
