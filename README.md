@@ -139,6 +139,7 @@ You can view a demo setup [here](https://github.com/functzia/demo).
 
 - [fofx-web](https://github.com/functzia/fofx-web) - An input/output plugin for HTTP requests
 - [fofx-cron](https://github.com/functzia/fofx-cron) - An input plugin for crontab-flavoured scheduled tasks
+- [fofx-mongodb](https://github.com/functzia/fofx-mongodb) - An input/output plugin for MongoDB
 
 ## Roadmap
 
