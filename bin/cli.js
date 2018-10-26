@@ -3,6 +3,7 @@ const path = require('path');
 const { argv } = require('yargs')
   .usage('Usage: fofx [...options] [--watch]')
   .boolean('watch')
+  .conflicts('watch', 'broker')
 
   .default('level', 'INFO')
   .default('modules', path.join(process.cwd(), 'modules'))
@@ -10,6 +11,10 @@ const { argv } = require('yargs')
   .default('nanos', path.join(process.cwd(), 'nanos.json'))
 
   .describe('watch', 'Watch plugins and nanos files for changes, and reload')
+  .describe(
+    'broker',
+    'Run fofx as a master, using a redis broker connections string'
+  )
   .describe(
     'level',
     'Minimal log level to print (DOC|DEBUG|INFO|WARN|ERROR|FATAL)'

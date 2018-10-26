@@ -135,6 +135,10 @@ And there you have it - a running platform for your nanoservices.
 
 You can view a demo setup [here](https://github.com/functzia/demo).
 
+## Distributed Run
+
+Run `fofx` with the `--broker=<redis_connection_string>` flag. This runs the main platform without nano execution responsibilities. You should then run `fofx-worker` with the same `--broker` flag, with either an identical copy of your enviornment, or the same one, using the `--dry` flag to make sure you don't re-download your nanos.
+
 ## Official Plugins
 
 - [fofx-web](https://github.com/functzia/fofx-web) - An input/output plugin for HTTP requests
@@ -143,5 +147,5 @@ You can view a demo setup [here](https://github.com/functzia/demo).
 
 ## Roadmap
 
-- [ ] Scalable/distributed
+- [x] Scalable/distributed
 - [x] Watch changes to plugins/nanos and reload

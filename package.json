@@ -1,6 +1,6 @@
 {
   "name": "fofx",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "main": "index.js",
   "repository": "https://github.com/functzia/fofx.git",
   "author": "Alon Niv <oakfang@gmail.com>",
@@ -12,7 +12,10 @@
     "mkdirp": "^0.5.1",
     "npm": "^6.4.1",
     "pacote": "^9.1.0",
+    "redis-connection-string": "^1.0.4",
     "rimraf": "^2.6.2",
+    "rsmq": "^0.9.2",
+    "rsmq-worker": "^0.5.2",
     "time-stamp": "^2.1.0",
     "uuid": "^3.3.2",
     "yargs": "^12.0.2"
@@ -21,7 +24,8 @@
     "start": "node bin/cli.js"
   },
   "bin": {
-    "fofx": "bin/cli.js"
+    "fofx": "bin/cli.js",
+    "fofx-worker": "bin/worker-cli.js"
   },
   "keywords": [
     "serverless",
