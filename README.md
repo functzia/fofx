@@ -76,6 +76,8 @@ We'll disregard the _package.json_ for now, and start with our _nano.json_ file:
 This file must have a hash with the `input` key, and may also have an `output` key. These represent the plugins that feed/accept data from your nano. In our example, our nano is triggered by the Crontab Plugin (`fofx-cron`), as indicated by the `type` key (every plugin has a declared, unique type) This plugin also needs a valid `cron` key in order to succefully schedule tasks. In our example, this nano will run every 20 seconds.
 By the `output` key, we can tell that the result of the nano will be sent as a POST request to the url `http://localhost:5000/api/bar`, via the Web Plugin (`fofx-web`).
 
+**New In version 1.3.0:** Your _nano.json_ file may have a `useState` key with a boolean value. If this key is set to `true`, your nano may use state, even across workers. See _Stateful Nanos_, below.
+
 This is all we need to write in order to create a schduled task that sends HTTP requests.
 
 As to our _index.js_:
@@ -97,6 +99,22 @@ module.exports = function() {
 ```
 
 And we have our first nano! Now we just have to make sure it's installable (you can publish to npm, store it on a git server or even just `npm link` it).
+
+### Stateful Nanos
+
+Sometimes, you may wish your nano to have a state that persists between runs. Since `fofx` may run across different workers, you shouldn't rely on a module level variable for this. To enable persistent state, please set `"useState"` to `true` in your _nano.json_ file, and then use it like so:
+
+```js
+module.exports = async function() {
+  const state = (await this.state.get()) || {};
+  if (!state.foo) {
+    state.foo = 0;
+  }
+  state.foo++;
+  await this.state.set(state);
+  return state;
+};
+```
 
 ### Back to our nanos.json
 

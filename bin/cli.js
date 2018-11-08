@@ -3,6 +3,7 @@ const path = require('path');
 const { argv } = require('yargs')
   .usage('Usage: fofx [...options] [--watch]')
   .boolean('watch')
+  .boolean('dry')
   .conflicts('watch', 'broker')
 
   .default('level', 'INFO')
@@ -21,7 +22,8 @@ const { argv } = require('yargs')
   )
   .describe('plugins', 'Path to plugins JSON file')
   .describe('nanos', 'Path to nanos JSON file')
-  .describe('modules', 'Directory in which to save dependencies for runtime');
+  .describe('modules', 'Directory in which to save dependencies for runtime')
+  .describe('dry', "Don't actually install anything");
 
 const startGB = require('./green-blue');
 const setupFofx = require('..');
