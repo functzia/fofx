@@ -1,28 +1,17 @@
-const path = require('path');
-const mkdirp = require('mkdirp');
-const { promisify } = require('./lib/utils');
 const getNanosQueue = require('./lib/queue');
-const { getPluginsByType } = require('./lib/plugins');
+const getPluginsByType = require('./lib/plugins');
 const { loadNanos } = require('./lib/nanos');
 const Logger = require('./lib/logger');
 const logText = require('./lib/logger/text');
 
-async function setupFofx({
-  level,
-  plugins,
-  nanos,
-  modules,
-  broker,
-  dry = false,
-}) {
+async function setupFofx({ level, manifest, modules, port, dry = false }) {
   const log = new Logger(Logger.levels[level.toUpperCase()]);
   logText(log);
   const fofxLog = log.scoped('fofx');
   try {
-    await promisify(mkdirp)(path.join(modules, 'plugins'));
-    await promisify(mkdirp)(path.join(modules, 'nanos'));
-    await promisify(mkdirp)(path.join(modules, 'cache'));
-    const nq = await getNanosQueue(log, broker);
+    const { fofx } = require(manifest);
+    const { plugins, nanos } = fofx;
+    const nq = await getNanosQueue(log, port);
     const pluginsByType = await getPluginsByType(modules, plugins, log, !dry);
     await loadNanos(modules, nanos, pluginsByType, nq, fofxLog, !dry);
     fofxLog.info('Ready to go!');

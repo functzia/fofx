@@ -6,7 +6,7 @@ Our plugin's input function will trigger every X seconds. If the nano's executio
 
 Our plugin's output function will log the result with a log level specified by the plugin's main parameters.
 
-So far, this is how the _plugins.json_ file of a user of our plugin should look:
+So far, this is how the `fofx.plugins` section of a user of our plugin should look:
 
 ```json
 [
@@ -19,7 +19,7 @@ So far, this is how the _plugins.json_ file of a user of our plugin should look:
 ]
 ```
 
-And this is a prospective _nano.json_ of a nano that relies on our plugin:
+And this is a prospective `fofx.nanos` of a nano that relies on our plugin:
 
 ```json
 {

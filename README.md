@@ -19,16 +19,28 @@ A good `fofx` setup is composed of two kinds of entities:
 
 ## Setup
 
-Once you've installed the cli, you should create a new directory. Lets call ours _demo_.
-In it, create 2 JSON files: _plugins.json_ and _nanos.json_. These serve as your "package.json"s, as we shall soon see. Recap:
+Once you've installed the cli, you should create a new project. Lets call ours _demo_.
+In it, create a _package.json_ file (you can use `npm init -y` for a start). Recap:
 
 ```
 demo/
-|--plugins.json
-|--nanos.json
+|--package.json
 ```
 
-Now, go into _plugins.json_. This is where you list your plugins (duh). A plugin can either be listed as its package name (if `npm install` accets it, `fofx` accepts it, as a rule), or as a more complex object:
+Inside your _package.json_ file, add a `"fofx"` key, like so:
+
+```json
+{
+  "name": "demo",
+  ...
+  "fofx": {
+    "plugins": [],
+    "nanos": []
+  }
+}
+```
+
+Now, go into `plugins` key. This is where you list your plugins (duh). A plugin can either be listed as its package name (if `npm install` accepts it, `fofx` accepts it, as a rule), or as a more complex object:
 
 ```json
 [
@@ -44,39 +56,42 @@ Now, go into _plugins.json_. This is where you list your plugins (duh). A plugin
 
 As you may have noticed, the complex form accepts a `params` key, which is an object passed to the plugin's factory function. You can read more on these on individual plugins' READMEs.
 
-We'll skip _nanos.json_ for now. First, let's create our first nano.
+We'll skip `"nanos"` for now. First, let's create our first nano.
 
 ### Our first nano
 
-Open a new terminal tab. Create a new node project, however you like. It should have a _package.json_ and main file (usually, _index.js_). Make sure the packe name is unique - this is your nano's name! Now, go ahead and create a _nano.json_ file, too. Recap:
+Open a new terminal tab. Create a new node project, however you like. It should have a _package.json_ and main file (usually, _index.js_). Make sure the packe name is unique - this is your nano's name! Recap:
 
 ```
 nano-test/
 |--package.json
 |--index.js
-|--nano.json
 ```
 
-We'll disregard the _package.json_ for now, and start with our _nano.json_ file:
+Inside the _package.json_ add a `"fofx"` section:
 
 ```json
 {
-  "input": {
-    "type": "cron",
-    "cron": "*/20 * * * * *"
-  },
-  "output": {
-    "type": "web",
-    "method": "POST",
-    "url": "http://localhost:5000/api/bar"
+  "name": "my-special-nano",
+  ...
+  "fofx": {
+    "input": {
+      "type": "cron",
+      "cron": "*/20 * * * * *"
+    },
+    "output": {
+      "type": "web",
+      "method": "POST",
+      "url": "http://localhost:5000/api/bar"
+    }
   }
 }
 ```
 
-This file must have a hash with the `input` key, and may also have an `output` key. These represent the plugins that feed/accept data from your nano. In our example, our nano is triggered by the Crontab Plugin (`fofx-cron`), as indicated by the `type` key (every plugin has a declared, unique type) This plugin also needs a valid `cron` key in order to succefully schedule tasks. In our example, this nano will run every 20 seconds.
-By the `output` key, we can tell that the result of the nano will be sent as a POST request to the url `http://localhost:5000/api/bar`, via the Web Plugin (`fofx-web`).
+This section must have a hash with the `input` key, and may also have an `output` key. These represent the plugins that feed/accept data from your nano. In our example, our nano is triggered by the Crontab Plugin (`@fofx/cron`), as indicated by the `type` key (every plugin has a declared, unique type) This plugin also needs a valid `cron` key in order to succefully schedule tasks. In our example, this nano will run every 20 seconds.
+By the `output` key, we can tell that the result of the nano will be sent as a POST request to the url `http://localhost:5000/api/bar`, via the Web Plugin (`@fofx/web`).
 
-**New In version 1.3.0:** Your _nano.json_ file may have a `useState` key with a boolean value. If this key is set to `true`, your nano may use state, even across workers. See _Stateful Nanos_, below.
+Your `"fofx"` section may have a `useState` key with a boolean value. If this key is set to `true`, your nano may use state, even across workers. See _Stateful Nanos_, below.
 
 This is all we need to write in order to create a schduled task that sends HTTP requests.
 
@@ -116,7 +131,7 @@ module.exports = async function() {
 };
 ```
 
-### Back to our nanos.json
+### Back to our `nanos` section
 
 Now we can simply list our nanos by their instabllable names (just like with the plugins file - if `npm install` accepts it, so should `fofx`). No complex forms this time:
 
@@ -125,6 +140,31 @@ Now we can simply list our nanos by their instabllable names (just like with the
 ```
 
 Setup is done!
+
+Your demo's _package.json_ should look like this now:
+
+```json
+{
+  "name": "demo",
+  ...
+  "fofx": {
+    "nanos": [
+      "https://github.com/functzia/nano-test/tarball/master",
+      "https://github.com/functzia/nano-test/tarball/crontab",
+      "https://github.com/functzia/nano-test/tarball/mirror"
+    ],
+    "plugins": [
+      {
+        "name": "fofx-web",
+        "params": {
+          "port": 5000
+        }
+      },
+      "fofx-cron"
+    ]
+  }
+}
+```
 
 ## Run
 
@@ -135,16 +175,16 @@ This should install your plugins and nanos in a directory named _modules_ under 
 
 ```
 demo/
-|--plugins.json
-|--nanos.json
+|--package.json
 |--modules/
 |----plugins/
+|------cache/
 |------package-lock.json
 |------node_modules/
 |----nanos/
+|------cache/
 |------package-lock.json
 |------node_modules/
-|----cache/
 ```
 
 If and when you use git to manage your `fofx` setup, you should set the _.gitignore_ to ignore the _modules_ directory.
@@ -155,13 +195,13 @@ You can view a demo setup [here](https://github.com/functzia/demo).
 
 ## Distributed Run
 
-Run `fofx` with the `--broker=<redis_connection_string>` flag. This runs the main platform without nano execution responsibilities. You should then run `fofx-worker` with the same `--broker` flag, with either an identical copy of your enviornment, or the same one, using the `--dry` flag to make sure you don't re-download your nanos.
+Run `fofx` with the `--port=<port>` flag. This runs the main platform without nano execution responsibilities. You should then run `fofx-worker` with the `--broker="ws://localhost:<port>"` flag, with either an identical copy of your enviornment, or the same one, using the `--dry` flag to make sure you don't re-download your nanos.
 
 ## Official Plugins
 
-- [fofx-web](https://github.com/functzia/fofx-web) - An input/output plugin for HTTP requests
-- [fofx-cron](https://github.com/functzia/fofx-cron) - An input plugin for crontab-flavoured scheduled tasks
-- [fofx-mongodb](https://github.com/functzia/fofx-mongodb) - An input/output plugin for MongoDB
+- [@fofx/web](https://github.com/functzia/fofx-web) - An input/output plugin for HTTP requests
+- [@fofx/cron](https://github.com/functzia/fofx-cron) - An input plugin for crontab-flavoured scheduled tasks
+- [@fofx/mongodb](https://github.com/functzia/fofx-mongodb) - An input/output plugin for MongoDB
 
 ## Roadmap
 
